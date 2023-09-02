@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FormalChain</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Welcome to FormalChain</h1>
+    
+    <h2>Blockchain Explorer</h2>
+    <div class="blockchain">
+        <div class="block">
+            <h3>Block #1</h3>
+            <p>Hash: {{ chain[0].previous_hash }}</p>
+            <p>Timestamp: {{ chain[0].timestamp }}</p>
+        </div>
+
+        {% for block in chain[1:] %}
+        <div class="block">
+            <h3>Block #{{ block.index }}</h3>
+            <p>Hash: {{ block.previous_hash }}</p>
+            <p>Timestamp: {{ block.timestamp }}</p>
+            <p>Transactions:</p>
+            <ul>
+                {% for transaction in block.transactions %}
+                <li>{{ transaction.sender }} sent {{ transaction.amount }} to {{ transaction.recipient }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
