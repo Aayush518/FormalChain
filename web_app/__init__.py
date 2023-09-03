@@ -1,10 +1,6 @@
-from flask import Flask
+from flask import Blueprint
 
-def create_app(blockchain):
-    app = Flask(__name__)
+blockchain_bp = Blueprint('blockchain', __name__, url_prefix='/blockchain')
+user_bp = Blueprint('user', __name__, url_prefix='/user')
 
-    # Register your blockchain blueprint
-    from .routes import create_blockchain_routes
-    app.register_blueprint(create_blockchain_routes(blockchain))
-
-    return app
+from . import routes

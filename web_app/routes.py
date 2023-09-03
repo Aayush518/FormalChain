@@ -1,52 +1,33 @@
-from flask import Blueprint, jsonify, request
-from app.transaction import Transaction
-from uuid import uuid4
+from flask import render_template, request, jsonify
+from app import app
 
-def create_blockchain_routes(blockchain):
-    blockchain_bp = Blueprint('blockchain', __name__)
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-    @blockchain_bp.route('/mine', methods=['GET'])
-    def mine():
-        # Mining a new block
-        last_block = blockchain.last_block
-        last_proof = last_block['proof']
-        proof = blockchain.proof_of_work(last_proof)
+from web_app import blockchain_bp, user_bp  # Import blueprints after app initialization
 
-        # Reward the miner for mining a new block
-        blockchain.new_transaction(
-            sender="0",  # Special sender to signify mining reward
-            recipient=str(uuid4()),  # Miner's address
-            amount=config.MINING_REWARD
-        )
+@app.route('/mine', methods=['GET'])
+def mine():
+    # Implement mining logic
+    pass
 
-        # Create a new block and add it to the chain
-        previous_hash = blockchain.hash(last_block)
-        block = blockchain.new_block(proof, previous_hash)
+@blockchain_bp.route('/transactions/new', methods=['POST'])
+def new_transaction():
+    # Implement new transaction creation logic
+    pass
 
-        response = {
-            'message': 'New block mined successfully!',
-            'index': block['index'],
-            'transactions': block['transactions'],
-            'proof': block['proof'],
-            'previous_hash': block['previous_hash'],
-        }
-        return jsonify(response), 200
+@blockchain_bp.route('/chain', methods=['GET'])
+def chain():
+    # Implement blockchain viewing logic
+    pass
 
-    @blockchain_bp.route('/transactions/new', methods=['POST'])
-    def new_transaction():
-        data = request.get_json()
-        required_fields = ['sender', 'recipient', 'amount']
-        if not all(field in data for field in required_fields):
-            return 'Missing fields in transaction data', 400
+@user_bp.route('/register', methods=['GET', 'POST'])
+def register():
+    # Implement user registration logic
+    pass
 
-        # Create a new transaction
-        index = blockchain.new_transaction(data['sender'], data['recipient'], data['amount'])
-        response = {'message': f'Transaction will be added to Block {index}'}
-        return jsonify(response), 201
-
-    @blockchain_bp.route('/chain', methods=['GET'])
-    def full_chain():
-        # Return the entire blockchain
-        return jsonify({'chain': blockchain.chain})
-
-    return blockchain_bp
+@user_bp.route('/login', methods=['GET', 'POST'])
+def login():
+    # Implement user login logic
+    pass
