@@ -1,5 +1,6 @@
 
-# FormalChain - A Simple Blockchain Project
+# FormalChain 
+
 
 Welcome to FormalChain, a beginner-friendly blockchain project implemented in Python using Flask. This project aims to provide you with a hands-on introduction to blockchain technology. Feel free to explore, learn, and expand upon it.
 
